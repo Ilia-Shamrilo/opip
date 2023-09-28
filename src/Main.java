@@ -64,10 +64,7 @@ public class Main {
 
         do {
 
-            Ranner ranner = new Ranner();
-            Thread thread = new Thread(ranner);
-            thread.start();
-
+            Menu.actionMenu();
 
             actionNum = getIntInput(scanner,7);
 

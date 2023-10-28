@@ -9,7 +9,6 @@ public class Services implements Serializable {
         return name;
     }
 
-
     public double getPrice() {
         return price;
     }
@@ -28,4 +27,10 @@ public class Services implements Serializable {
         this.name = name;
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return name + " " + price + "р. ";
+    }
+
 }

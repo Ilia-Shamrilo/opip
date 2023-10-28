@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -66,7 +67,7 @@ public class Main {
 
             Menu.actionMenu();
 
-            actionNum = getIntInput(scanner,7);
+            actionNum = getIntInput(scanner,9);
 
             int secondActionNum;
 
@@ -82,12 +83,13 @@ public class Main {
                     int choice;
 
                     choice = getIntInput(scanner,servicess.size());
-
                     if (choice == 0) break;
 
                     Menu.timingMenu();
 
                     secondActionNum=getIntInput(scanner,3);
+                    if (secondActionNum == 0) break;
+
                     switch (secondActionNum){
                         case 1 -> servicess.get(choice-1).setTime("Утро");
 
@@ -137,36 +139,34 @@ public class Main {
                         System.out.println("Файл не найден");
                     }
                 }
-                case 6 ->{
-                   Thread increaseTread = new Thread(() -> {
-                       servicess.sort(Comparator.comparingDouble(Services::getPrice));//сортируем по 1 полю
-                       for (Services ser: servicess){
-                           System.out.println(ser.getName() + " " + ser.getPrice() + "p");
-                       }
-                   });
-                   increaseTread.start();
-                    try {
-                        increaseTread.join();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
+                case 6 -> {
+                    ArrayList<Services> ser = (ArrayList<Services>) servicess.stream()
+                            .sorted(Comparator.comparingDouble(Services::getPrice))
+                            .collect(Collectors.toList());
+                    ser.forEach(System.out::println);
+                    System.out.println();
                 }
                 case 7 ->{
-                    Thread decreasingTread = new Thread(() -> {
-                        servicess.sort(Comparator.comparingDouble(Services::getPrice));
-                        for (int i  = servicess.size() - 1; i >= 0; i--){
-                            System.out.println(servicess.get(i).getName() + " " + servicess.get(i).getPrice() + "p");
-                        }
-                    });
-                    decreasingTread.start();
-                    try {
-                        decreasingTread.join();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-
+                    ArrayList<Services> serv = (ArrayList<Services>) servicess.stream()
+                            .sorted(Comparator.comparingDouble(Services::getPrice).reversed())
+                            .collect(Collectors.toList());
+                    serv.forEach(System.out::println);
+                    System.out.println();
+                }
+                case 8 ->{
+                    ArrayList<Services> current = (ArrayList<Services>) currentServices.stream()
+                            .distinct()
+                            .collect(Collectors.toList());
+                    currentServices=current;
+                }
+                case 9 ->{
+                    double sum = servicess.stream()
+                            .mapToDouble(Services::getPrice)
+                            .sum();
+                    System.out.println("Сумма всех услуг: " + sum);
                 }
             }
+
         }while (actionNum != 0);
     }
 }

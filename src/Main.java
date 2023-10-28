@@ -166,7 +166,6 @@ public class Main {
                     System.out.println("Сумма всех услуг: " + sum);
                 }
             }
-
         }while (actionNum != 0);
     }
 }
